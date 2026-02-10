@@ -5,7 +5,7 @@ A Claude Code skill for generating images via the [Evolink Z-Image-Turbo](https:
 ## Features
 
 - Cross-platform: uses `curl` (natively available on all modern OS)
-- No shell escaping issues: user prompts are written to file via Write tool
+- No shell escaping issues: user prompts are passed via bash heredoc, no temp files needed
 - Auto-download: images saved locally as `evolink-<timestamp>.webp`
 - Configurable size, seed, and polling parameters
 
@@ -26,6 +26,18 @@ You need an Evolink API Key. If you don't have one:
 1. Register at https://evolink.ai/signup
 2. Go to https://evolink.ai/dashboard/keys to create a key
 
+Set it as a system environment variable so the skill can auto-detect it:
+
+```bash
+# Windows (PowerShell, requires restart terminal)
+[System.Environment]::SetEnvironmentVariable('EVOLINK_API_KEY', 'your-key-here', 'User')
+
+# macOS / Linux
+echo 'export EVOLINK_API_KEY="your-key-here"' >> ~/.bashrc && source ~/.bashrc
+```
+
+If not set, Claude will prompt you for the key on first use.
+
 ## Usage
 
 In Claude Code, type:
@@ -36,6 +48,26 @@ In Claude Code, type:
 
 Or simply `/generate-z-image` and Claude will ask for your prompt.
 
+### Examples
+
+```
+# Basic usage — just describe what you want
+/generate-z-image a cyberpunk city at night with neon lights
+
+# Specify aspect ratio in your prompt
+/generate-z-image a portrait photo of a woman, size 9:16
+
+# Request a specific seed for reproducibility
+/generate-z-image a watercolor landscape, seed 42
+```
+
+### How It Works
+
+1. Claude checks for your `EVOLINK_API_KEY` environment variable (prompts you if not set)
+2. Submits your prompt to the Evolink Z-Image-Turbo API
+3. Polls the task status every 10 seconds (up to 200 retries)
+4. Downloads the generated image as `evolink-<timestamp>.webp` to your working directory
+
 ## Parameters
 
 | Parameter | Required | Default | Description |
@@ -43,6 +75,7 @@ Or simply `/generate-z-image` and Claude will ask for your prompt.
 | prompt | Yes | — | Image description |
 | size | No | `1:1` | Aspect ratio: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `9:16`, `16:9`, `1:2`, `2:1`, or custom `WxH` (376-1536px) |
 | seed | No | random | Random seed for reproducibility |
+| nsfw_check | No | `false` | Enable stricter NSFW content filtering |
 
 ## Notes
 
