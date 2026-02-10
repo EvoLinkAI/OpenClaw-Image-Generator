@@ -6,17 +6,29 @@ A Claude Code skill for generating images via the [Evolink Z-Image-Turbo](https:
 
 - Cross-platform: uses `curl` (natively available on all modern OS)
 - No shell escaping issues: user prompts are passed via bash heredoc, no temp files needed
-- Auto-download: images saved locally as `evolink-<timestamp>.webp`
+- Auto-download: images saved locally as `evolink-{timestamp}.webp`
 - Configurable size, seed, and polling parameters
+- Standard Skill structure with progressive disclosure
+
+## Skill Structure
+
+```
+generate-z-image/
+├── SKILL.md                 # Main skill file (YAML frontmatter + instructions)
+├── scripts/
+│   └── generate.sh          # Bash script template
+└── references/
+    └── api-reference.md     # API documentation
+```
 
 ## Installation
 
-Copy `generate-z-image.md` to your project's Claude Code commands directory:
+Copy the `generate-z-image/` folder to your project's Claude Code commands directory:
 
 ```bash
 # In your project root
 mkdir -p .claude/commands
-cp generate-z-image.md .claude/commands/
+cp -r generate-z-image .claude/commands/
 ```
 
 ## Prerequisites
@@ -66,7 +78,7 @@ Or simply `/generate-z-image` and Claude will ask for your prompt.
 1. Claude checks for your `EVOLINK_API_KEY` environment variable (prompts you if not set)
 2. Submits your prompt to the Evolink Z-Image-Turbo API
 3. Polls the task status every 10 seconds (up to 200 retries)
-4. Downloads the generated image as `evolink-<timestamp>.webp` to your working directory
+4. Downloads the generated image as `evolink-{timestamp}.webp` to your working directory
 
 ## Parameters
 
@@ -79,5 +91,5 @@ Or simply `/generate-z-image` and Claude will ask for your prompt.
 
 ## Notes
 
-- Image URLs expire in **72 hours** — images are auto-downloaded locally as `evolink-<timestamp>.webp`
+- Image URLs expire in **72 hours** — images are auto-downloaded locally as `evolink-{timestamp}.webp`
 - First-time use will prompt for your API key; set `EVOLINK_API_KEY` as a system environment variable to skip this step
