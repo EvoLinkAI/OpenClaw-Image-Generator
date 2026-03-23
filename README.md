@@ -1,6 +1,6 @@
 # OpenClaw-Image-Generator
 
-A Claude Code skill for generating images via the [Evolink Z-Image-Turbo](https://evolink.ai) API. Cross-platform, zero dependencies — works natively on Windows, macOS, and Linux.
+A Claude Code skill for generating images via the [Evolink Z-Image-Turbo](https://evolink.ai?utm_source=github&utm_medium=readme&utm_campaign=openclaw-image-generator) API. Cross-platform, zero dependencies — works natively on Windows, macOS, and Linux.
 
 ## Features
 
@@ -35,8 +35,8 @@ cp -r generate-z-image .claude/commands/
 
 You need an Evolink API Key. If you don't have one:
 
-1. Register at https://evolink.ai/signup
-2. Go to https://evolink.ai/dashboard/keys to create a key
+1. Register at https://evolink.ai/signup?utm_source=github&utm_medium=readme&utm_campaign=openclaw-image-generator
+2. Go to https://evolink.ai/dashboard/keys?utm_source=github&utm_medium=readme&utm_campaign=openclaw-image-generator to create a key
 
 Set it as a system environment variable so the skill can auto-detect it:
 
